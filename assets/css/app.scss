@@ -1,0 +1,39 @@
+// Variables
+// ==================
+:root{
+  --color: #121c42;
+  --gap: 20px;
+  --space: 8px;
+  --border: #d5e3ec;
+  --border-light: #e6eff4;
+  --background: #f7fafb;
+  --background-light: #fff;
+  --shadow: #d8e1e8;
+}
+
+.dark {
+
+}
+// Outils
+// ==================
+@import 'tools/reset';
+@import 'tools/functions';
+@import 'tools/mixins';
+@import 'tools/layout';
+@import 'tools/typography';
+@import 'tools/animations';
+
+// Generic
+// ====================
+body {
+   // font-family: $font;
+    font-size: calc(var(--space) * 2);
+    color: var(--color);
+    line-height: 1.6;
+    background: var(--background);
+    scroll-margin: 100px 0 0 0;
+  }
+
+// Modules
+//=================
+@import "modules/headers.scss";

@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - 8000:80
+    volumes:
+      - .:/var/www:delegated
+      - ./site.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
+  php:
+    build:
+      context: ./tools/docker/php
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    volumes:
+      - .:/var/www:delegated
+    depends_on:
+      - db
+    environment:
+      PHP_IDE_CONFIG: serverName=linkmat
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: linkmat
+      POSTGRES_USER: linkmat
+      POSTGRES_DB: linkmat
+      TZ: America/Toronto
+      PGTZ: America/Toronto
+    ports:
+      - 5432:5432 # On expose le port pour pouvoir inspecter la base pendant la phase de développement
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DESIGN: pepa-linha
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - 8888:8080
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - 1080:8025
+volumes:
+  db-data:
+    driver: local
+  search-data:
+    driver: local
